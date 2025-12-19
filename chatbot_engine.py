@@ -1,4 +1,5 @@
 import google.genai as genai
+import streamlit as st
 import os
 from groq import Groq
 from dotenv import load_dotenv
@@ -9,7 +10,7 @@ class GeminiEngine:
     def __init__(self, model_name="gemini-2.0-flash-001"):
         load_dotenv()
         self._history: List[Dict[str, str]] = []
-        self.api_key = os.getenv("GEMINI_API_KEY")
+        self.api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not found in environment variables.")
         self.client = genai.Client(api_key=self.api_key)
@@ -38,7 +39,7 @@ class GroqEngine:
     def __init__(self, model_name="llama-3.3-70b-versatile"):
         self._history: List[Dict[str, str]] = []
         load_dotenv()
-        self.api_key = os.getenv("GROQ_API_KEY")
+        self.api_key = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
         if not self.api_key:
             raise ValueError("GROQ_API_KEY not found in environment variables.")
 
